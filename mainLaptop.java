@@ -22,6 +22,8 @@ public class mainLaptop {
         choiceFilter(laptopList);
     }
 
+    // настройка фильтров
+    // настраивать нужно каждый, иначе при выводе списка ноутбуков вылетет ошибка (
     static void choiceFilter(HashSet<Laptop> list) {
         System.out.println("\nКритерии выбора ноутбука:\n"+
                             "1) Производитель\n"+
@@ -49,8 +51,11 @@ public class mainLaptop {
             choiceFilter(list);
         }
         else if (choice.equals("3")) {
-            System.out.print("Введите объём ROM: ");
-
+            System.out.print("Введите минимальный объём ROM: ");
+            int rom = input.nextInt();
+            input.nextLine();
+            filterRom(rom, list);
+            choiceFilter(list);
         }
         else if (choice.equals("4")) {
             
@@ -69,7 +74,8 @@ public class mainLaptop {
             else {
                 for (Laptop laptop : list) {
                     if (laptop.getMaker().trim().toLowerCase().equals(filters.get("laptopMaker").toString().trim().toLowerCase())
-                        && laptop.getRam() >= (int) filters.get("Ram"))
+                        && laptop.getRam() >= (int) filters.get("Ram")
+                        && laptop.getRom() >= (int) filters.get("Rom"))
                     {
                         System.out.println(laptop);
                     }
@@ -84,6 +90,7 @@ public class mainLaptop {
         }
     }
 
+    // фильтр производителей
     static void filterMaker(String maker, HashSet<Laptop> laptopList) {
         int count = 0;
         for (Laptop laptop : laptopList) {
@@ -100,6 +107,7 @@ public class mainLaptop {
         }
     }
 
+    // фильтр RAM
     static void filterRam(int ram, HashSet<Laptop> laptopList) {
         int count = 0;
         for (Laptop laptop : laptopList) {
@@ -109,6 +117,23 @@ public class mainLaptop {
         }
         if (count > 0) {
             filters.put("Ram", ram);
+            System.out.println("Фильтр обновлен!");
+        }
+        else {
+            System.out.println("Нет подходящих ноутбуков!");
+        }
+    }
+
+    // фильтр ROM
+    static void filterRom(int rom, HashSet<Laptop> laptopList) {
+        int count = 0;
+        for (Laptop laptop : laptopList) {
+            if (laptop.getRom() >= rom) {
+                count++;
+            }
+        }
+        if (count > 0) {
+            filters.put("Rom", rom);
             System.out.println("Фильтр обновлен!");
         }
         else {
